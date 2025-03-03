@@ -11,7 +11,7 @@ declare global {
     }
 }
 
-export const authMiddleware = async(req  : Request  , res : Response , next : NextFunction) => {
+export const authMiddleware = async(req  : Request  , res : Response , next : NextFunction) : Promise<any> => {
     try{
         const token = req.headers.authorization?.split(" ")[1];
         if (!token) {

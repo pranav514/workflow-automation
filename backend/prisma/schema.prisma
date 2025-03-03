@@ -22,7 +22,7 @@ model Zap{
   id  String @id @default(uuid())
   triggerId String 
   userId String
-  trigger Trigger[]
+  trigger Trigger?
   actions  Action[]
   zapRun ZapRun[]
   user User @relation(fields: [userId] , references: [id])

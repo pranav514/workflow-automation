@@ -1,8 +1,9 @@
-import express from "express"
+import express, { Request, Response } from "express"
 import { JWT_SECRET, prisma } from "../config";
 import { comparePassword, hashPassword } from "../utils/authentication";
 import { signInSchema, signUpSchema } from "../types/schemaValidation";
 import { sign } from "jsonwebtoken";
+import { authMiddleware } from "../middleware/authMiddleware";
 const router = express.Router();
 
 router.post('/signup' , async(req , res) : Promise<any> => {
@@ -77,6 +78,34 @@ router.post('/signin' , async(req , res) : Promise<any> => {
     }catch(error){
         return res.status(500).json({
             message : "some went wrong during the signin"
+        })
+    }
+})
+
+router.get('/getuser', authMiddleware, async (req: Request, res: Response) :Promise<any>  => {
+    try{
+        const userId = req.userId;
+        if(!userId){
+            return res.status(404).json({
+                message : "you are not authorized  , cannot get the userId"
+            })
+        }
+        const user = await prisma.user.findFirst({
+            where : {
+                id : userId
+            },
+            select : {
+                name  : true,
+                email : true,
+            }
+        })
+        return res.status(200).json({
+            message  : "fetched user sucessfully",
+            user
+        })
+    }catch(error){
+        return res.status(500).json({
+            error : "something went wrong while fetching the user"
         })
     }
 })
