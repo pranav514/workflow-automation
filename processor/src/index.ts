@@ -1,7 +1,7 @@
 import { Kafka } from "kafkajs";
 import { prisma } from "./config";
 const kafka_client = new Kafka({
-    clientId : 'localhost:9092',
+    clientId : 'localhost:9092', // need to change the client id
     brokers : ['localhost:9092']
 })
 
