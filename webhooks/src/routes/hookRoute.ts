@@ -9,7 +9,7 @@ router.post("/:userId/:zapId" , async(req , res) => {
             const zapRun = await tx.zapRun.create({
                 data : {
                     zapId,
-                    metadata
+                    metadata    
                 }
             })
             await tx.zapRunOutbox.create({
