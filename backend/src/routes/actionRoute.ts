@@ -13,7 +13,7 @@ router.get('/availableaction' ,authMiddleware,async (req , res) : Promise<any> =
         }
         const availableaction = await prisma.availableAction.findMany({})
         await redisClient.set("availableactions" , JSON.stringify(availableaction) , {
-            EX : 14400 // invalidate the cache after every four hour
+            EX : 14 // invalidate the cache after every four hour
         })
         return res.status(200).json({
             message : "fetched available action succesfully",
