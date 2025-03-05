@@ -153,6 +153,7 @@ router.delete('/delete/:zapId' ,authMiddleware , async(req  , res) : Promise<any
     }catch(error){
         res.status(400).json({
             message : "error while deleting the zap",
+            error
         })
     }
 })
