@@ -48,7 +48,7 @@ model AvailableTrigger{
 
 model Action{
   id String @id @default(uuid())
-  zapId String
+  zapId String 
   availabeActionId String
   metadata Json @default("{}")
   type AvailableAction @relation(fields: [availabeActionId] , references: [id])
