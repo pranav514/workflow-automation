@@ -15,6 +15,7 @@ model User{
   name String
   email String
   password String
+  isverified Boolean @default(false)
   zaps Zap[]
 }
 

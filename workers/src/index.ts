@@ -18,7 +18,7 @@ async function main() {
   await producer.connect();
   consumer.subscribe({
     topic: "zap-events",
-    fromBeginning: true, // this may create the issue bcoz if the new consumer is up it may process everything from beginning
+    fromBeginning: true, 
   });
   await consumer.run({
     autoCommit: false, // it will not automatically marked as processed
