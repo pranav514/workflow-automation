@@ -3,10 +3,25 @@ import { ZapCreateSchema } from "../types/schemaValidation"
 import { prisma } from "../config";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { promise } from "zod";
+import { sendMail } from "../utils/mail";
 const router = express.Router()
     router.post('/createzap' , authMiddleware,async(req , res) : Promise<any> => {
+        const userId = req.userId
+           const user  = await prisma.user.findFirst({
+                where : { 
+                    id : userId
+                }
+           })
+           if(!user?.isverified){
+            return res.status(401).json({
+                message : "email not verified yet  , pls verify the email",
+                user
+            })
+           } 
+           const email = user.email
+           const name = user.name
         try{
-            const userId = req.userId
+            
             const parsedData = ZapCreateSchema.safeParse(req.body);
             if(!parsedData.success){
                 return res.status(422).json({
@@ -46,6 +61,8 @@ const router = express.Router()
                 return zap.id
         })
         console.log(zapId)
+        const body = `hi ${name} , your zap is created sucessfully`
+        sendMail(email , body)
         return res.status(200).json({
             message : "zap created succesfully",
             zapId
@@ -53,6 +70,8 @@ const router = express.Router()
         })
         }
         catch(error){
+            const error_body = `error occured while creating the zap try again after some`
+            sendMail(email , error_body)
             return res.status(500).json({
                 message  : "error ocurred while creating the zap"
             })
