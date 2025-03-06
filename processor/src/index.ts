@@ -1,8 +1,17 @@
 import { Kafka } from "kafkajs";
 import { prisma } from "./config";
 const kafka_client = new Kafka({
-    clientId : 'localhost:9092', // need to change the client id
-    brokers : ['localhost:9092']
+    clientId : 'processor', // need to change the client id
+    brokers : ['52.66.240.45:9092'],
+    ssl: false,
+  sasl: undefined,
+  connectionTimeout: 1000,
+  requestTimeout: 3000,
+  retry: {
+    maxRetryTime: 30000,
+    retries: 5,
+  },
+  logLevel: 5,
 })
 
 async function process(){

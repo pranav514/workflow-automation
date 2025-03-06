@@ -13,6 +13,6 @@ app.use('/api/v1/action' , actionRoute)
 app.use('/api/v1/trigger' ,triggerRoute)
 app.use('/api/v1/zap' , zapRoute)
 app.listen(3001 , async() => {
-    await redisClient.connect();
+    // await redisClient.connect();
     console.log("server of primary backend started on port 3001")
 })
