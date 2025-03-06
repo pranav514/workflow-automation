@@ -67,9 +67,36 @@ async function main() {
           (action.metadata as JsonObject)?.to as string,
           zapRunMetadata
         );
+        await sendMail(to  , body);
         console.log("mail send succesfully");
       }
+      await new Promise(r => setTimeout(r , 500));
+
+      // if the zap contains more than one action sequentially add it to the queue again  , and increase the stage 
+      // so that the state and sortordering will be matched 
+      const laststage = (zapRunData?.zap.actions.length || 1 ) - 1
+      if(laststage != stage){
+        console.log("more actions , pushing back to queue");
+        await producer.send({
+            topic : "zap-events",
+            messages  : [{
+                value : JSON.stringify({
+                    stage : stage + 1,
+                    zapRunId
+                })
+            }]
+        })
+      }
+       console.log("processed all the actions");
+       //commit the offset that processed so that they will not be executed again
+       await consumer.commitOffsets([{
+        topic : "zap-events",
+        partition : partition,
+        offset : (parseInt(message.offset) + 1).toString()
+       }])
+
     },
+
   });
 }
 main();
