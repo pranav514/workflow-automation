@@ -6,7 +6,16 @@ import { sendMail } from "./utils/mail";
 
 const kafka = new Kafka({
   clientId: "consumer-processing",
-  brokers: ["localhost:9092"],
+  brokers: ["52.66.240.45:9092"],
+  ssl: false,
+  sasl: undefined,
+  connectionTimeout: 1000,
+  requestTimeout: 3000,
+  retry: {
+    maxRetryTime: 30000,
+    retries: 5,
+  },
+  logLevel: 5,
 });
 
 async function main() {
