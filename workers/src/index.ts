@@ -6,16 +6,7 @@ import { sendMail } from "./utils/mail";
 
 const kafka = new Kafka({
   clientId: "consumer-processing",
-  brokers: ["52.66.240.45:9092"],
-  ssl: false,
-  sasl: undefined,
-  connectionTimeout: 1000,
-  requestTimeout: 3000,
-  retry: {
-    maxRetryTime: 30000,
-    retries: 5,
-  },
-  logLevel: 5,
+  brokers: ["localhost:9092"],
 });
 
 async function main() {
@@ -26,7 +17,7 @@ async function main() {
   const producer = kafka.producer();
   await producer.connect();
   consumer.subscribe({
-    topic: "zap-events",
+    topic: "zap-event",
     fromBeginning: true, 
   });
   await consumer.run({
@@ -73,7 +64,7 @@ async function main() {
           zapRunMetadata
         );
         const to = parse(
-          (action.metadata as JsonObject)?.to as string,
+          (action.metadata as JsonObject)?.email as string,
           zapRunMetadata
         );
         await sendMail(to  , body);

@@ -86,14 +86,14 @@ router.get('/userzap' , authMiddleware , async(req , res) : Promise<any> => {
             where : {
                 userId : id
             },
-            select : {
-                trigger : {
-                    select : {
+            include : {
+                actions : {
+                    include : {
                         type : true
                     }
                 },
-                actions : {
-                    select : {
+                trigger : {
+                    include : {
                         type  : true
                     }
 

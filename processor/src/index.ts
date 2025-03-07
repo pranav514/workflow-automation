@@ -1,17 +1,8 @@
 import { Kafka } from "kafkajs";
 import { prisma } from "./config";
 const kafka_client = new Kafka({
-    clientId : 'processor', // need to change the client id
-    brokers : ['52.66.240.45:9092'],
-    ssl: false,
-  sasl: undefined,
-  connectionTimeout: 1000,
-  requestTimeout: 3000,
-  retry: {
-    maxRetryTime: 30000,
-    retries: 5,
-  },
-  logLevel: 5,
+    clientId : 'localhost:9092', // need to change the client id
+    brokers : ["localhost:9092"],
 })
 
 async function process(){
@@ -23,7 +14,7 @@ async function process(){
         })
         console.log(rows);
         producer.send({
-            topic : "zap-events",
+            topic : "zap-event",
             messages : rows.map(r => {
                 return {
                     value : JSON.stringify({zapRunId : r.zapRunId  , stage : 0})
