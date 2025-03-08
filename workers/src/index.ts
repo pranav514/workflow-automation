@@ -6,7 +6,7 @@ import { sendMail } from "./utils/mail";
 
 const kafka = new Kafka({
   clientId: "consumer-processing",
-  brokers: ["52.66.240.45:9092"],
+  brokers: ["localhost:9092"],
   ssl: false,
   sasl: undefined,
   connectionTimeout: 1000,

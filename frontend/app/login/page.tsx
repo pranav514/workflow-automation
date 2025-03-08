@@ -153,7 +153,7 @@ export default function SignInPage() {
             </form>
 
             <p className="mt-4 text-center text-sm text-gray-600">
-              Already have an account?{" "}
+              Don't have an account?{" "}
               <a href="/signup" className="text-blue-600 hover:text-blue-500">
                 Sign up
               </a>
