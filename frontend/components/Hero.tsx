@@ -7,6 +7,7 @@ import { Zap, Bot, Workflow } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { Description } from "./Description";
+import { InfiniteLogoSlider } from "./InfiniteLogoSlider";
 
 interface FeatureCardProps {
   icon: React.ReactNode;
@@ -16,94 +17,41 @@ interface FeatureCardProps {
 
 const FeatureCard = ({ icon, title, subtitle }: FeatureCardProps) => (
   <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="flex flex-col items-center p-6 m-4 rounded-lg bg-white shadow-lg max-w-xs"
+    whileHover={{ scale: 1.03, y: -5 }}
+    transition={{ type: "spring", stiffness: 300 }}
+    className="flex flex-col items-center p-8 rounded-xl bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 max-w-xs relative overflow-hidden group"
   >
-    <div className="text-blue-500 mb-4">{icon}</div>
-    <h3 className="text-xl font-bold mb-2">{title}</h3>
-    <p className="text-gray-600 text-center">{subtitle}</p>
+    <motion.div
+      className="text-blue-500 mb-6 relative z-10 p-4 rounded-full bg-blue-50 group-hover:bg-blue-100 transition-colors duration-300"
+      whileHover={{ rotate: 360 }}
+      transition={{ duration: 0.5 }}
+    >
+      {icon}
+    </motion.div>
+
+    <motion.h3
+      className="text-2xl font-bold mb-3 text-gray-900 relative z-10"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 }}
+    >
+      {title}
+    </motion.h3>
+
+    <motion.p
+      className="text-gray-600 text-center leading-relaxed relative z-10"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.2 }}
+    >
+      {subtitle}
+    </motion.p>
+
+    {/* Background decoration */}
+    <div className="absolute top-0 right-0 -mr-16 -mt-16 w-40 h-40 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-40 h-40 bg-blue-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
   </motion.div>
 );
-
-const companies = [
-  { name: "Slack", logo: "/logos/Slack.png" },
-  { name: "Spotify", logo: "/logos/Spotify.png" },
-  { name: "Airbnb", logo: "/logos/Airbnb.png" },
-  { name: "Zapier", logo: "/logos/Zapier.png" },
-  { name: "Netflix", logo: "/logos/Netflix.png" },
-  { name: "Zomato", logo: "/logos/Zomato.png" },
-];
-
-const duplicatedCompanies = Array(2).fill(companies).flat();
-
-const InfiniteLogoSlider = () => {
-  return (
-    <div className="mt-16 text-center overflow-hidden relative">
-      <p className="text-gray-500 mb-4">Trusted by top companies worldwide</p>
-
-      <div className="relative w-full overflow-hidden">
-        <div className="flex">
-          <motion.div
-            className="flex items-center gap-12 whitespace-nowrap"
-            animate={{
-              x: [0, -1920],
-            }}
-            transition={{
-              duration: 30,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          >
-            {companies.map((company, index) => (
-              <div
-                key={`first-${index}`}
-                className="relative w-32 h-12 flex-shrink-0"
-              >
-                <Image
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  className="filter grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
-            {/* Second set of logos */}
-            {companies.map((company, index) => (
-              <div
-                key={`second-${index}`}
-                className="relative w-32 h-12 flex-shrink-0"
-              >
-                <Image
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  className="filter grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
-            {/* Third set of logos for seamless loop */}
-            {companies.map((company, index) => (
-              <div
-                key={`third-${index}`}
-                className="relative w-32 h-12 flex-shrink-0"
-              >
-                <Image
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  className="filter grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const Hero = () => {
   const router = useRouter();
@@ -144,7 +92,7 @@ export const Hero = () => {
             </SecondaryButton>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <div className="grid md:grid-cols-3 gap-8 mt-12 px-4">
             <FeatureCard
               icon={<Zap size={32} />}
               title="Blazing Fast"
@@ -163,7 +111,6 @@ export const Hero = () => {
           </div>
           <InfiniteLogoSlider />
         </motion.div>
-        <Description />
       </div>
     </div>
   );
