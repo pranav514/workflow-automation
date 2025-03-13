@@ -78,7 +78,7 @@ async function main() {
       if(laststage != stage){
         console.log("more actions , pushing back to queue");
         await producer.send({
-            topic : "zap-events",
+            topic : "zap-event",
             messages  : [{
                 value : JSON.stringify({
                     stage : stage + 1,
@@ -90,7 +90,7 @@ async function main() {
        console.log("processed all the actions");
        //commit the offset that processed so that they will not be executed again
        await consumer.commitOffsets([{
-        topic : "zap-events",
+        topic : "zap-event",
         partition : partition,
         offset : (parseInt(message.offset) + 1).toString()
        }])
