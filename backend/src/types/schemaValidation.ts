@@ -15,10 +15,10 @@ export const signInSchema = z.object({
 
 export const ZapCreateSchema = z.object({
     triggerId : z.string(),
-    triggerMetadata : z.any().optional(),
+    triggerMetadata : z.record(z.any()).optional(),
     actions : z.array(z.object({
         availableActionId : z.string(),
-        actionMetadata : z.any().optional(),
+        actionMetadata : z.record(z.any()).optional()
     }))
 })
 

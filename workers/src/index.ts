@@ -17,7 +17,7 @@ async function main() {
   const producer = kafka.producer();
   await producer.connect();
   consumer.subscribe({
-    topic: "zap-events",
+    topic: "zap-event",
     fromBeginning: true, 
   });
   await consumer.run({
@@ -60,13 +60,15 @@ async function main() {
         return;
       }
       const zapRunMetadata = zapRunData?.metadata;
-      if (action.type.id === "email") {
+      console.log("action type id" , action.type.id);
+      if (action.type.id === "d3fe5a0c-875f-42a7-9344-8097797fdbfd") {
+        console.log("here am I");
         const body = parse(
           (action.metadata as JsonObject)?.body as string,
           zapRunMetadata
         );
         const to = parse(
-          (action.metadata as JsonObject)?.to as string,
+          (action.metadata as JsonObject)?.email as string,
           zapRunMetadata
         );
         await sendMail(to  , body);
@@ -80,7 +82,7 @@ async function main() {
       if(laststage != stage){
         console.log("more actions , pushing back to queue");
         await producer.send({
-            topic : "zap-events",
+            topic : "zap-event",
             messages  : [{
                 value : JSON.stringify({
                     stage : stage + 1,
@@ -92,7 +94,7 @@ async function main() {
        console.log("processed all the actions");
        //commit the offset that processed so that they will not be executed again
        await consumer.commitOffsets([{
-        topic : "zap-events",
+        topic : "zap-event",
         partition : partition,
         offset : (parseInt(message.offset) + 1).toString()
        }])
