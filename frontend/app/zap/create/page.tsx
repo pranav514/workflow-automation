@@ -229,7 +229,7 @@ function Modal({
     name: string;
   }>();
   const isTrigger = index === 1;
-
+  console.log("selected Action" , selectedAction)
   return (
     <div className="fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-slate-100 bg-opacity-70 flex">
       <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -265,7 +265,8 @@ function Modal({
             </button>
           </div>
           <div className="p-4 md:p-5 space-y-4">
-            {step === 1 && selectedAction?.id === "email" && (
+            {step === 1 && selectedAction?.id === "d3fe5a0c-875f-42a7-9344-8097797fdbfd" && (
+            
               <EmailSelector
                 setMetadata={(metadata) => {
                   onSelect({

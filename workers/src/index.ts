@@ -58,7 +58,9 @@ async function main() {
         return;
       }
       const zapRunMetadata = zapRunData?.metadata;
-      if (action.type.id === "email") {
+      console.log("action type id" , action.type.id);
+      if (action.type.id === "d3fe5a0c-875f-42a7-9344-8097797fdbfd") {
+        console.log("here am I");
         const body = parse(
           (action.metadata as JsonObject)?.body as string,
           zapRunMetadata
